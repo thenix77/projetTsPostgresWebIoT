@@ -25,33 +25,47 @@ class Data {
 
     }
 
-    async Show (id:number,userid:number){
+    async Show (id:number){
 
-        const ssql = 'select * from projects '+
-                     'where id=$1 and userid=$2'
+        const ssql =    `select ps.id, ps.projectid, ps.shieldid,ps.descripcion,
+                                p.nombre proynombre,
+                                p.descripcion proydesc,
+                                sf.tpshield as tpshield,
+                                sf.shield as shield,
+                                sf.imagen,
+                                sf.pines
+                                
+                        from projectshield ps
+                        inner join projects p on ps.projectid = p.id
+                        inner join  
+                            (	select s.id, s.tiposhieldid, ts.nombre tpshield,s.nombre shield, imagen, pines, s.active
+                                from shields s
+                                inner join tiposhields ts on ts.id = s.tiposhieldid 
+                            ) sf
+                            on ps.shieldid = sf.id
+                        where
+                            ps.projectid = $1`
 
-            const {rows} = await db.query(ssql, [id,userid])
-            return rows    
+            const {rows} = await db.query(ssql, [id])
+            return rows  
     }
 
     async Update (project:IProject){
 
         const ssql = "update projects set " +
-                    "nombre=$1, "+
-                    "descripcion=$2, "+
-                    "active=$3, "+
-                    "updated=$4 "+
-                    "where userid=$5 and id=$6;"
+                        "nombre=$1, "+
+                        "descripcion=$2, "+
+                        "updated=$3 "+
+                    "where userid=$4 and id=$5;"
 
         const values = [
             project.nombre,
             project.descripcion,
-            project.active,
             project.updated,
             project.userid,
             project.id
-            
         ]
+        console.log(values)
         
         try {
             await db.query(ssql,values)

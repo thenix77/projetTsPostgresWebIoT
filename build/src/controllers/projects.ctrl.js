@@ -32,7 +32,7 @@ class Ctrl {
         return __awaiter(this, void 0, void 0, function* () {
             const id = parseInt(req.params.id);
             const userid = req.userId;
-            const rst = yield project_da_1.default.Show(id, userid);
+            const rst = yield project_da_1.default.Show(id);
             return res.status(200).json(rst);
         });
     }

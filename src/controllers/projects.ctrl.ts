@@ -22,7 +22,7 @@ class Ctrl {
         const id:number = parseInt(req.params.id)
         const  userid = req.userId
         
-        const rst = await da.Show(id,userid)
+        const rst = await da.Show(id)
         return res.status(200).json(rst)           
     }
 
