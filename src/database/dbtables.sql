@@ -79,8 +79,9 @@ create table projects
 
 create table projectshield(
     id              serial,
-    projectid       int                 ,
-    shieldid        int                 ,
+    projectid       int                 not null,
+    shieldid        int                 not null,
+    descripcion     varchar(255)        not null,
     created         timestamp           DEFAULT now(),
     constraint pk_projectshield  primary key (id),
     constraint fk_project_project foreign key (projectid) references projects(id),
